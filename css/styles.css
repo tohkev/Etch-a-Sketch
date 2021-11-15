@@ -1,0 +1,14 @@
+main {
+  text-align: center;
+}
+
+.grid-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-grid-btn {
+  margin-bottom: 1rem;
+  padding: 0.5rem 2rem;
+}
