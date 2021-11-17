@@ -1,8 +1,12 @@
 let gridBlock = document.querySelector(".grid-block");
-let heightGrid = 16;
-let widthGrid = 16;
+let gridSize = 16;
+let rainbowMode = false;
 let newGridBtn = document.querySelector(".new-grid-btn");
 let allBoxes = document.querySelectorAll(".grid-box");
+let rainbowBtn = document.querySelector(".rainbow-mode");
+let bwBtn = document.querySelector(".b-w");
+let sizeSlider = document.querySelector("#size-slider");
+let sliderLabel = document.querySelector(".slider");
 
 //creates a row which will contain the grid boxes
 function createRow() {
@@ -16,23 +20,20 @@ function createRow() {
 function createGridbox() {
   let grid = document.createElement("div");
   grid.classList.add("grid-box");
-  grid.style.border = "2px solid black";
-  grid.style.paddingTop = `${16 / heightGrid}rem`;
-  grid.style.paddingBottom = `${16 / heightGrid}rem`;
-  grid.style.paddingLeft = `${16 / widthGrid}rem`;
-  grid.style.paddingRight = `${16 / widthGrid}rem`;
+  grid.style.padding = `${16 / gridSize}rem`;
   return grid;
 }
 
 // based on the height and width specified, creates a grid and appends it to the gridBlock container
-function createGrid(heightGrid, widthGrid) {
-  for (let i = 0; i < heightGrid; i++) {
+function createGrid(size) {
+  for (let i = 0; i < gridSize; i++) {
     let row = createRow();
-    for (let j = 0; j < widthGrid; j++) {
+    for (let j = 0; j < gridSize; j++) {
       row.appendChild(createGridbox());
     }
     gridBlock.appendChild(row);
   }
+  activateColor();
 }
 
 //refreshes the allBoxes variable so that it includes all new created grid boxes
@@ -43,21 +44,8 @@ function refreshBoxes() {
 //resets the current grid, (1) removes the color, and if user specifies different dimensions, grid will be reformed
 function resetAll() {
   allBoxes.forEach((box) => {
-    box.classList.remove("colored");
+    box.style.background = "white";
   });
-  let inputHeight = parseInt(
-    prompt("Enter a number to determine the number of squares for height:")
-  );
-  let inputWidth = parseInt(
-    prompt("Enter a number to determine the number of squares for width:")
-  );
-  if (inputHeight !== heightGrid && inputWidth !== widthGrid) {
-    gridBlock.textContent = "";
-    heightGrid = inputHeight;
-    widthGrid = inputWidth;
-    createGrid(heightGrid, widthGrid);
-    activateColor();
-  }
 }
 
 //generate a random color
@@ -73,15 +61,37 @@ function activateColor() {
   refreshBoxes();
   allBoxes.forEach((box) => {
     box.addEventListener("mouseover", (e) => {
-      e.target.style.background = getRandomColor();
+      if (rainbowMode) {
+        e.target.style.background = getRandomColor();
+      } else {
+        e.target.style.background = "black";
+      }
     });
   });
 }
 
+//button to initiate rainbow mode
+rainbowBtn.addEventListener("click", () => {
+  rainbowMode = true;
+});
+
+//button for black/white mode
+bwBtn.addEventListener("click", () => {
+  rainbowMode = false;
+});
+
+//slider to customize size
+sizeSlider.addEventListener("change", (e) => {
+  sliderLabel.textContent = `${e.target.value}x${e.target.value}`;
+  gridSize = e.target.value;
+  gridBlock.textContent = "";
+  createGrid(gridSize);
+});
+
+//reset button
 newGridBtn.addEventListener("click", () => {
   resetAll();
   refreshBoxes();
 });
 
-createGrid(heightGrid, widthGrid);
-activateColor();
+createGrid(gridSize);

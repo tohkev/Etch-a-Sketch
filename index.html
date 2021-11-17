@@ -10,9 +10,23 @@
   <body>
     <main>
       <h1>Etch-a-Sketch!</h1>
-      <button class="new-grid-btn">New Grid</button>
-
-      <section class="grid-block"></section>
+      <div class="container">
+        <section class="grid-block left"></section>
+        <section class="inputs right">
+          <button class="b-w">Black/White</button>
+          <button class="rainbow-mode">Rainbow</button>
+          <input
+            type="range"
+            name="size"
+            id="size-slider"
+            min="1"
+            max="64"
+            value="16"
+          />
+          <label for="size-slider" class="slider">16x16</label>
+          <button class="new-grid-btn">Reset Sketch</button>
+        </section>
+      </div>
     </main>
     <script src="/scripts/script.js"></script>
   </body>
